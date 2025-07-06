@@ -85,13 +85,33 @@ CORS_ORIGIN=http://localhost:3000
 ### Health Check
 - `GET /health` - Server health status
 
-### Authentication
-- `POST /api/user/register` - User registration
-- `POST /api/user/login` - User login
-- `POST /api/user/logout` - User logout
-- `GET /api/user/me` - Get current user
-- `POST /api/user/refresh` - Refresh JWT token
-- `PUT /api/user/change-password` - Change user password
+# Tasky Server API Routes
+
+## 🔐 Authentication
+- `POST /api/auth/user/register` - User registration
+- `POST /api/auth/user/login` - User login
+- `GET /api/auth/user/profile` - Get current user profile
+- `PUT /api/auth/user/update-user` - Update user profile
+- `PUT /api/auth/user/update-password` - Update user password
+- `DELETE /api/auth/user/delete-user` - Delete user account
+- `POST /api/auth/user/logout` - User logout
+
+## 📋 Task Management
+- `POST /api/tasks/newtask` - Create new task
+- `GET /api/tasks/get-tasks` - Get all user tasks
+- `GET /api/tasks/get-task/:id` - Get single task by ID
+- `PUT /api/tasks/update-task/:id` - Update task
+- `PATCH /api/tasks/update-status/:id` - Update task status only
+- `DELETE /api/tasks/delete-task/:id` - Delete task
+
+## 📧 Email Services
+- `POST /api/email/send-verification` - Send email verification code
+- `POST /api/email/verify-email` - Verify email with code
+- `POST /api/email/send-password-reset` - Send password reset email
+- `POST /api/email/send-email` - Send generic email
+
+## 🔧 System
+
 
 ### General
 - `GET /api` - API information
@@ -166,7 +186,7 @@ Mohammed Ahmed 'MohammedME'
 
 ## 🐛 Issues
 
-If you encounter any issues, please file them [here](https://github.com/yourusername/Tasky-Server/issues).
+If you encounter any issues, please file them [here](https://github.com/Mohammed-Ahmed-ME/Tasky-Server/issues).
 
 ## 🔮 Roadmap
 

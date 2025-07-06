@@ -1,6 +1,8 @@
-import express from 'express'
-import { sendEmail, sendVerificationEmail, sendPasswordResetEmail } from'../Config/Maile'
-const Maile = express.Maile();
+import express from 'express';
+import crypto from 'crypto';
+import { sendEmail, sendVerificationEmail, sendPasswordResetEmail } from '../Config/Maile.js';
+
+const email = express.Router();
 
 // Generate random verification code
 const generateVerificationCode = () => {
@@ -9,26 +11,26 @@ const generateVerificationCode = () => {
 
 // Generate random reset token
 const generateResetToken = () => {
-    return require('crypto').randomBytes(32).toString('hex');
+    return crypto.randomBytes(32).toString('hex');
 };
 
 // Send verification email route
-Maile.post('/send-verification', async (req, res) => {
+email.post('/send-verification', async (req, res) => {
     try {
-        const { email } = req.body;
+        const { email: userEmail } = req.body;
         
-        if (!email) {
+        if (!userEmail) {
             return res.status(400).json({ error: 'Email is required' });
         }
         
         const verificationCode = generateVerificationCode();
         
-        // Save verification code to database with expiration time
-        // await saveVerificationCode(email, verificationCode, 10); // 10 minutes
+        // TODO: Save verification code to database with expiration time
+        // await saveVerificationCode(userEmail, verificationCode, 10); // 10 minutes
         
-        await sendVerificationEmail(email, verificationCode);
+        await sendVerificationEmail(userEmail, verificationCode);
         
-        res.json({ 
+        res.status(200).json({
             message: 'Verification email sent successfully',
             // Don't send the actual code in production
             code: process.env.NODE_ENV === 'development' ? verificationCode : undefined
@@ -40,28 +42,28 @@ Maile.post('/send-verification', async (req, res) => {
 });
 
 // Send password reset email route
-Maile.post('/send-password-reset', async (req, res) => {
+email.post('/send-password-reset', async (req, res) => {
     try {
-        const { email } = req.body;
+        const { email: userEmail } = req.body;
         
-        if (!email) {
+        if (!userEmail) {
             return res.status(400).json({ error: 'Email is required' });
         }
         
-        // Check if user exists in database
-        // const user = await getUserByEmail(email);
+        // TODO: Check if user exists in database
+        // const user = await getUserByEmail(userEmail);
         // if (!user) {
         //     return res.status(404).json({ error: 'User not found' });
         // }
         
         const resetToken = generateResetToken();
         
-        // Save reset token to database with expiration time
-        // await saveResetToken(email, resetToken, 60); // 1 hour
+        // TODO: Save reset token to database with expiration time
+        // await saveResetToken(userEmail, resetToken, 60); // 1 hour
         
-        await sendPasswordResetEmail(email, resetToken);
+        await sendPasswordResetEmail(userEmail, resetToken);
         
-        res.json({ message: 'Password reset email sent successfully' });
+        res.status(200).json({ message: 'Password reset email sent successfully' });
     } catch (error) {
         console.error('Error sending password reset email:', error);
         res.status(500).json({ error: 'Failed to send password reset email' });
@@ -69,24 +71,24 @@ Maile.post('/send-password-reset', async (req, res) => {
 });
 
 // Verify email code route
-Maile.post('/verify-email', async (req, res) => {
+email.post('/verify-email', async (req, res) => {
     try {
-        const { email, code } = req.body;
+        const { email: userEmail, code } = req.body;
         
-        if (!email || !code) {
+        if (!userEmail || !code) {
             return res.status(400).json({ error: 'Email and code are required' });
         }
         
-        // Check verification code from database
-        // const isValid = await verifyCode(email, code);
+        // TODO: Check verification code from database
+        // const isValid = await verifyCode(userEmail, code);
         // if (!isValid) {
         //     return res.status(400).json({ error: 'Invalid or expired verification code' });
         // }
         
-        // Mark email as verified
-        // await markEmailAsVerified(email);
+        // TODO: Mark email as verified
+        // await markEmailAsVerified(userEmail);
         
-        res.json({ message: 'Email verified successfully' });
+        res.status(200).json({ message: 'Email verified successfully' });
     } catch (error) {
         console.error('Error verifying email:', error);
         res.status(500).json({ error: 'Failed to verify email' });
@@ -94,7 +96,7 @@ Maile.post('/verify-email', async (req, res) => {
 });
 
 // Generic email sending route
-Maile.post('/send-email', async (req, res) => {
+email.post('/send-email', async (req, res) => {
     try {
         const { to, subject, text, html } = req.body;
         
@@ -104,11 +106,11 @@ Maile.post('/send-email', async (req, res) => {
         
         await sendEmail(to, subject, text, html);
         
-        res.json({ message: 'Email sent successfully' });
+        res.status(200).json({ message: 'Email sent successfully' });
     } catch (error) {
         console.error('Error sending email:', error);
         res.status(500).json({ error: 'Failed to send email' });
     }
 });
 
-module.exports = Maile;
+export default email;
