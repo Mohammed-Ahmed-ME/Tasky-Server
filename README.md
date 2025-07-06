@@ -97,18 +97,18 @@ CORS_ORIGIN=http://localhost:3000
 - `POST /api/auth/user/logout` - User logout
 
 ## 📋 Task Management
-- `POST /api/tasks/newtask` - Create new task
-- `GET /api/tasks/get-tasks` - Get all user tasks
-- `GET /api/tasks/get-task/:id` - Get single task by ID
-- `PUT /api/tasks/update-task/:id` - Update task
-- `PATCH /api/tasks/update-status/:id` - Update task status only
-- `DELETE /api/tasks/delete-task/:id` - Delete task
+- `POST /api/auth/tasks/newtask` - Create new task
+- `GET /api/auth/tasks/get-tasks` - Get all user tasks
+- `GET /api/auth/tasks/get-task/:id` - Get single task by ID
+- `PUT /api/auth/tasks/update-task/:id` - Update task
+- `PATCH /api/auth/tasks/update-status/:id` - Update task status only
+- `DELETE /api/auth/tasks/delete-task/:id` - Delete task
 
 ## 📧 Email Services
-- `POST /api/email/send-verification` - Send email verification code
-- `POST /api/email/verify-email` - Verify email with code
-- `POST /api/email/send-password-reset` - Send password reset email
-- `POST /api/email/send-email` - Send generic email
+- `POST /api/auth/email/send-verification` - Send email verification code
+- `POST /api/auth/email/verify-email` - Verify email with code
+- `POST /api/auth/email/send-password-reset` - Send password reset email
+- `POST /api/auth/email/send-email` - Send generic email
 
 ## 🔧 System
 
